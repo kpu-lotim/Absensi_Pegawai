@@ -1,0 +1,11 @@
+{
+  "name": "Absensi Pegawai ",
+  "short_name": "App_AbsensiPeg",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "absen.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "absen.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
