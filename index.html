@@ -1,21 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Presensi Pegawai KPU Lotim</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        body, html { margin:0; padding:0; height:100%; overflow:hidden; }
-        iframe { width:100%; height:100%; border:none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Absensi KPU Lotim</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#800000">
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: #800000; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; text-align: center; }
+    .container { padding: 20px; }
+    .logo { width: 100px; height: 100px; background: white; border-radius: 20px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .logo img { max-width: 80%; max-height: 80%; }
+    h1 { margin: 0 0 5px 0; font-size: 22px; font-weight: 800; }
+    p { margin: 0; opacity: 0.8; font-size: 14px; }
+    .status-box { margin-top: 30px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; font-size: 13px; font-weight: 600; }
+    .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-box { margin-top: 30px; background: rgba(255,0,0,0.2); border: 1px solid rgba(255,0,0,0.5); padding: 15px; border-radius: 12px; font-size: 13px; display: none; }
+    .btn-retry { margin-top: 15px; background: white; color: #800000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+  </style>
 </head>
 <body>
-    <iframe src="https://script.google.com/macros/s/AKfycbyOrcEEy-r0EY_DHKCAZSPvAUhoBnQFtsOvqB8okPx-KmkVj8H8s1bMmNyRaK7Rs-F2/exec" allow="camera" allow="geolocation"></iframe>
-<script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
+
+  <div class="container">
+    <div class="logo">
+      <!-- PASTIKAN NAMA FILE LOGO INI SESUAI DENGAN DI GITHUB ANDA -->
+      <img src="KPU_Logo.png" alt="Logo KPU">
+    </div>
+    <h1>ABSENSI PEGAWAI</h1>
+    <p>KPU KABUPATEN LOMBOK TIMUR</p>
+    
+    <div class="status-box" id="statusBox">
+      <span class="spinner"></span> Memeriksa Keamanan GPS...
+    </div>
+    
+    <div class="error-box" id="errorBox">
+      <strong><i class="fas fa-exclamation-triangle"></i> Akses GPS Ditolak</strong><br>
+      Aplikasi absensi wajib menggunakan GPS. Silakan aktifkan lokasi di pengaturan HP dan pastikan browser mengizinkan akses lokasi untuk website ini.
+      <br><button class="btn-retry" onclick="location.reload()">Coba Lagi</button>
+    </div>
+  </div>
+
+  <!-- GANTI URL DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA YANG PANJANG -->
+  <script>
+    const TARGET_URL = 'https://script.google.com/macros/s/1jOiAWxBn--TtLh0hrwIQmi3Fqa5qPb_NeZrYAJE_ql8/exec';
+
+    // Daftarkan Service Worker agar bisa diinstal
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+
+    // Proses Pengecekan GPS
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        // JIKA GPS BERHASIL
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        
+        document.getElementById('statusBox').innerHTML = '<span class="spinner"></span> GPS Terkunci. Menghubungkan ke Server...';
+        
+        // Kirim data GPS ke Google Apps Script lewat parameter URL, lalu redirect langsung
+        var finalUrl = TARGET_URL + '?lat=' + lat + '&lng=' + lng + '&loader=1';
+        window.location.href = finalUrl;
+        
+      }, function(error) {
+        // JIKA GPS DITOLAK
+        document.getElementById('statusBox').style.display = 'none';
+        document.getElementById('errorBox').style.display = 'block';
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+    } else {
+      document.getElementById('statusBox').innerHTML = 'Browser tidak mendukung GPS.';
+    }
+  </script>
 </body>
 </html>
