@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absebsi Pegawai 2026 KPU Lotim</title>
+    <title>Absensi Pegawai 2026 KPU Lotim</title>
     <link rel="manifest" href="manifest.json">
     <style>
         body, html { margin:0; padding:0; height:100%; overflow:hidden; }
@@ -11,8 +11,10 @@
     </style>
 </head>
 <body>
-    <iframe src="https://script.google.com/macros/s/AKfycbyYapBxNZRsH3MpQVJytjY_7vNaGvf-KsI1hFecqC5GN7ANrVo4R6WpGbe9bCnqu29k/exec" allow="camera"></iframe>
-<script>
+    <!-- Tambahkan 'geolocation' di dalam atribut allow -->
+    <iframe src="https://script.google.com/macros/s/AKfycbyYapBxNZRsH3MpQVJytjY_7vNaGvf-KsI1hFecqC5GN7ANrVo4R6WpGbe9bCnqu29k/exec" allow="camera; geolocation"></iframe>
+    
+    <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
