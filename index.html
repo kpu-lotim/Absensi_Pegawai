@@ -41,36 +41,43 @@
     </div>
   </div>
 
-  <!-- GANTI URL DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA YANG PANJANG -->
-  <script>
-    const TARGET_URL = 'https://script.google.com/macros/s/AKfycbyYapBxNZRsH3MpQVJytjY_7vNaGvf-KsI1hFecqC5GN7ANrVo4R6WpGbe9bCnqu29k/exec';
+ <script>
+  const TARGET_URL = 'https://script.google.com/macros/s/AKfycbyYapBxNZRsH3MpQVJytjY_7vNaGvf-KsI1hFecqC5GN7ANrVo4R6WpGbe9bCnqu29k/exec';
 
-    // Daftarkan Service Worker agar bisa diinstal
-    if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-    }
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
 
-    // Proses Pengecekan GPS
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        // JIKA GPS BERHASIL
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        
-        document.getElementById('statusBox').innerHTML = '<span class="spinner"></span> GPS Terkunci. Menghubungkan ke Server...';
-        
-        // Kirim data GPS ke Google Apps Script lewat parameter URL, lalu redirect langsung
-        var finalUrl = TARGET_URL + '?lat=' + lat + '&lng=' + lng + '&loader=1';
-        window.location.href = finalUrl;
-        
-      }, function(error) {
-        // JIKA GPS DITOLAK
-        document.getElementById('statusBox').style.display = 'none';
-        document.getElementById('errorBox').style.display = 'block';
-      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
-    } else {
-      document.getElementById('statusBox').innerHTML = 'Browser tidak mendukung GPS.';
-    }
-  </script>
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      
+      document.getElementById('statusBox').innerHTML = '<span class="spinner"></span> Mengirim data absensi...';
+      
+      var finalUrl = TARGET_URL + '?lat=' + lat + '&lng=' + lng + '&loader=1';
+      
+      // MEMBUAT IFRAME TERSEMBUNYI
+      var hiddenIframe = document.createElement('iframe');
+      hiddenIframe.style.display = 'none';
+      
+      // Saat iframe selesai memuat (artinya data terkirim ke Google Script)
+      hiddenIframe.onload = function() {
+        document.getElementById('statusBox').innerHTML = '✅ Absensi Berhasil Dikirim!';
+        document.getElementById('statusBox').style.background = 'rgba(0, 128, 0, 0.4)';
+      };
+
+      // Tembakkan URL Google Script ke dalam iframe
+      hiddenIframe.src = finalUrl;
+      document.body.appendChild(hiddenIframe);
+      
+    }, function(error) {
+      document.getElementById('statusBox').style.display = 'none';
+      document.getElementById('errorBox').style.display = 'block';
+    }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+  } else {
+    document.getElementById('statusBox').innerHTML = 'Browser tidak mendukung GPS.';
+  }
+</script>
 </body>
 </html>
