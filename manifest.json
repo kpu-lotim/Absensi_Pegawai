@@ -1,16 +1,11 @@
 {
-  "name": "Absensi KPU Lotim",
+  "name": "Aplikasi RKH 2026",
   "short_name": "Absensi KPU",
-  "description": "Aplikasi Absensi Pegawai KPU Kabupaten Lombok Timur",
-  "start_url": "./",
+  "start_url": ".",
   "display": "standalone",
-
+  "background_color": "#ffffff",
   "icons": [
-    {
-      "src": "absensi.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "absensi.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "absensi.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
