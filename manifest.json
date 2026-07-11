@@ -8,7 +8,7 @@
   "theme_color": "#800000",
   "icons": [
     {
-      "src": "KPU_Logo.png",
+      "src": "absensi.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
