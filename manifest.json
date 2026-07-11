@@ -2,7 +2,7 @@
   "name": "Absensi KPU Lotim",
   "short_name": "Absensi KPU",
   "description": "Aplikasi Absensi Pegawai KPU Kabupaten Lombok Timur",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#800000",
   "theme_color": "#800000",
